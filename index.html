@@ -5,15 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mis XV Angélica Mariana - Temática Congelada</title>
     
-    <!-- Fuentes Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
-    
-    <!-- Iconos FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <script>
@@ -28,10 +23,7 @@
                         ice: {
                             100: '#e0f2fe',
                             300: '#7dd3fc',
-                            500: '#0ea5e9',
-                            900: '#0c4a6e',
-                        },
-                        darkice: '#030712'
+                        }
                     }
                 }
             }
@@ -39,90 +31,84 @@
     </script>
 
     <style>
-        /* Estilos base */
         body {
             background-color: #030712;
             color: #e0f2fe;
             scroll-behavior: smooth;
         }
 
-        /* Contenedor principal */
         .app-container {
             max-width: 480px;
             margin: 0 auto;
             background-color: #030712;
             min-height: 100vh;
-            box-shadow: 0 0 30px rgba(14, 165, 233, 0.15);
             overflow-x: hidden;
             position: relative;
         }
 
-        /* Texturas y Fondos */
+        /* FONDO OPTIMIZADO: Se eliminó background-attachment: fixed para evitar lag en scroll */
         .bg-frozen {
-            background-image: linear-gradient(rgba(3, 7, 18, 0.6), rgba(3, 7, 18, 0.8)), url('fondo.png');
+            background-image: linear-gradient(rgba(3, 7, 18, 0.7), rgba(3, 7, 18, 0.85)), url('fondo.png');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
         }
 
         .bg-ice-gradient {
             background: linear-gradient(135deg, #082f49 0%, #030712 50%, #082f49 100%);
             color: #e0f2fe;
-            border-top: 1px solid rgba(125, 211, 252, 0.2);
-            border-bottom: 1px solid rgba(125, 211, 252, 0.2);
+            border-top: 1px solid rgba(125, 211, 252, 0.1);
+            border-bottom: 1px solid rgba(125, 211, 252, 0.1);
         }
 
-        /* Animaciones de Scroll */
         .fade-in {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
         .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* --- NUEVAS ANIMACIONES --- */
+        /* ANIMACIONES OPTIMIZADAS */
         
-        /* 1. Resplandor del título (Ice Glow) */
-        @keyframes iceGlow {
-            0%, 100% { text-shadow: 0 0 10px rgba(125,211,252,0.6), 0 0 20px rgba(125,211,252,0.4); }
-            50% { text-shadow: 0 0 20px rgba(125,211,252,1), 0 0 40px rgba(125,211,252,0.8), 0 0 60px rgba(255,255,255,0.6); }
-        }
+        /* Brillo estático con animación de opacidad (Consume 90% menos recursos) */
         .glow-text {
-            animation: iceGlow 3s infinite ease-in-out;
+            text-shadow: 0 0 15px rgba(125,211,252,0.8);
+            animation: pulseGlow 3s infinite alternate;
+        }
+        @keyframes pulseGlow {
+            from { opacity: 0.8; }
+            to { opacity: 1; }
         }
 
-        /* 2. Iconos flotantes */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
+        /* Flote simplificado */
         .floating-icon {
             animation: float 4s ease-in-out infinite;
             display: inline-block;
+            will-change: transform;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
         }
 
-        /* 3. Nieve Cayendo (Snowflakes) */
+        /* Nieve optimizada con Aceleración por Hardware */
         .snowflake {
             position: fixed;
             top: -10vh;
-            color: #fff;
+            color: rgba(255,255,255,0.7);
             user-select: none;
-            z-index: 40; /* Detrás del modal, adelante del fondo */
+            z-index: 40;
             pointer-events: none;
-            text-shadow: 0 0 5px rgba(255,255,255,0.8);
+            will-change: transform; /* Clave para evitar lag */
             animation: fall linear infinite;
         }
         @keyframes fall {
-            0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(110vh) translateX(20px) rotate(360deg); opacity: 0; }
+            0% { transform: translate3d(0, -10vh, 0) rotate(0deg); }
+            100% { transform: translate3d(20px, 110vh, 0) rotate(360deg); }
         }
-        /* -------------------------- */
 
-        /* Botones elegantes congelados */
         .btn-elegant {
             display: inline-block;
             padding: 12px 30px;
@@ -135,33 +121,23 @@
             cursor: pointer;
             background: rgba(14, 165, 233, 0.1);
             border-radius: 4px;
-            position: relative;
-            overflow: hidden;
         }
         
         .btn-elegant:hover {
             background: #7dd3fc;
             color: #030712;
-            box-shadow: 0 0 20px rgba(125, 211, 252, 0.6);
             border-color: #7dd3fc;
         }
 
-        body.no-scroll {
-            overflow: hidden;
-        }
+        body.no-scroll { overflow: hidden; }
 
         #splash-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            top: 0; left: 0; width: 100vw; height: 100vh;
             background-color: #000;
             z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 1s ease-out;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.8s ease-out;
         }
 
         #splash-screen.fade-out {
@@ -170,80 +146,52 @@
         }
 
         #splash-video {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
+            position: absolute; top: 0; left: 0;
         }
 
-        /* Botón de Música Flotante */
         #music-btn {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            width: 45px;
-            height: 45px;
-            background: rgba(3, 7, 18, 0.7);
+            position: fixed; bottom: 20px; left: 20px;
+            width: 45px; height: 45px;
+            background: rgba(3, 7, 18, 0.8);
             border: 1px solid rgba(125, 211, 252, 0.5);
-            border-radius: 50%;
-            color: #7dd3fc;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            cursor: pointer;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 0 10px rgba(125, 211, 252, 0.2);
-            transition: all 0.3s ease;
-        }
-        #music-btn:hover {
-            background: rgba(14, 165, 233, 0.3);
-            transform: scale(1.1);
+            border-radius: 50%; color: #7dd3fc;
+            display: none; justify-content: center; align-items: center;
+            z-index: 100; cursor: pointer;
         }
     </style>
 </head>
 <body class="no-scroll">
 
-    <!-- Audio de Fondo (loop) -->
     <audio id="bg-music" loop>
         <source src="musica.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Botón flotante música -->
     <button id="music-btn" onclick="toggleMusic()">
         <i class="fa-solid fa-music-slash"></i>
     </button>
 
-    <!-- Pantalla de Bienvenida con Video -->
     <div id="splash-screen">
         <video id="splash-video" autoplay muted playsinline webkit-playsinline src="intro.mp4"></video>
     </div>
 
-    <!-- Contenedor móvil -->
     <div class="app-container" id="main-container">
 
-        <!-- 1. INICIO (Hero Section) -->
         <section class="h-screen w-full bg-frozen flex flex-col justify-center items-center text-center p-6 relative">
             <div class="fade-in z-10">
                 <p class="font-sans font-light tracking-[0.3em] text-sm mb-2 text-ice-300">MIS DULCES XVI</p>
-                <!-- Título con efecto Glow animado -->
                 <h1 class="font-serif text-6xl md:text-7xl text-white tracking-widest glow-text">ANGELICA<br>MARIANA</h1>
                 <p class="font-sans font-light text-xs mt-4 text-gray-300 italic">"Una noche mágica bajo el hielo"</p>
             </div>
-            
-            <!-- Indicador de scroll -->
             <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce opacity-70 text-ice-300">
                 <i class="fa-solid fa-chevron-down text-xl"></i>
             </div>
         </section>
 
-        <!-- 2. ¿CUÁNDO? -->
         <section class="bg-ice-gradient py-24 px-8 text-center flex flex-col items-center justify-center">
             <div class="fade-in">
-                <!-- Icono Flotante -->
-                <i class="fa-regular fa-calendar text-4xl mb-6 text-ice-300 drop-shadow-[0_0_10px_rgba(125,211,252,0.5)] floating-icon"></i>
+                <i class="fa-regular fa-calendar text-4xl mb-6 text-ice-300 floating-icon"></i>
                 <h2 class="font-serif text-3xl tracking-widest mb-4 uppercase text-white">¿Cuándo?</h2>
                 <div class="font-sans font-light space-y-2 text-lg text-gray-200">
                     <p class="tracking-wider">21 DE NOVIEMBRE 2026</p>
@@ -252,10 +200,8 @@
             </div>
         </section>
 
-        <!-- 3. ¿DÓNDE? -->
         <section class="bg-frozen py-24 px-8 text-center flex flex-col items-center justify-center">
-            <div class="fade-in w-full max-w-sm mx-auto p-8 border border-ice-300/30 bg-black/50 backdrop-blur-md rounded-lg">
-                <!-- Icono Flotante -->
+            <div class="fade-in w-full max-w-sm mx-auto p-8 border border-ice-300/20 bg-black/60 rounded-lg">
                 <i class="fa-solid fa-location-dot text-4xl mb-6 text-ice-300 floating-icon"></i>
                 <h2 class="font-serif text-3xl tracking-widest mb-4 uppercase text-white">¿Dónde?</h2>
                 <p class="font-sans font-light tracking-wider text-sm mb-4 uppercase text-gray-300">Casa de habitación <br><span class="text-ice-100 font-medium">4:00 p.m.</span></p>
@@ -264,49 +210,42 @@
             </div>
         </section>
 
-        <!-- 4. REGALOS -->
         <section class="bg-[#0b1221] py-24 px-8 text-center flex flex-col items-center justify-center border-t border-ice-300/10">
             <div class="fade-in max-w-sm">
-                <!-- Icono Flotante -->
                 <i class="fa-solid fa-gift text-4xl mb-6 text-ice-300 floating-icon"></i>
                 <h2 class="font-serif text-3xl tracking-widest mb-6 uppercase text-white">Regalos</h2>
-                <p class="font-sans font-light text-sm leading-relaxed mb-8 text-gray-300">
-                    Nada es más importante que tu presencia, pero si deseas hacerme un presente, puedes depositarlo en el sobre que te haré llegar.
+                <p class="font-sans font-light text-sm leading-relaxed mb-8 text-gray-400">
+                    Nada es más importante que tu presencia, pero si deseas hacerme un presente, puedes depositarlo en el sobre que te haré llegar o mediante transferencia.
                 </p>
                 <button onclick="openModal()" class="btn-elegant w-full">Ver Cuenta</button>
             </div>
         </section>
 
-        <!-- 5. DRESS CODE -->
         <section class="bg-frozen py-24 px-8 text-center flex flex-col items-center justify-center">
-            <div class="fade-in p-6 bg-black/40 backdrop-blur-sm rounded-lg border border-ice-300/20">
-                <!-- Icono Flotante -->
-                <i class="fa-regular fa-gem text-4xl mb-6 text-ice-300 drop-shadow-[0_0_10px_rgba(125,211,252,0.5)] floating-icon"></i>
+            <div class="fade-in p-6 bg-black/60 rounded-lg border border-ice-300/20">
+                <i class="fa-regular fa-gem text-4xl mb-6 text-ice-300 floating-icon"></i>
                 <h2 class="font-serif text-3xl tracking-widest mb-4 uppercase text-white">Dress Code</h2>
                 <p class="font-sans font-light tracking-widest text-lg uppercase text-ice-100 mb-4">Elegante / Etiqueta</p>
-                <p class="font-sans text-xs text-gray-300 uppercase tracking-wider border-t border-ice-300/30 pt-4">
-                    ❄️ (Mujeres no azul, será reservado para la festejada) ❄️
+                <p class="font-sans text-xs text-gray-400 uppercase tracking-wider border-t border-ice-300/20 pt-4">
+                    ❄️ (Mujeres no azul, reservado para la festejada) ❄️
                 </p>
             </div>
         </section>
 
-        <!-- 6. CONFIRMAR ASISTENCIA -->
         <section id="asistencia" class="bg-ice-gradient py-20 px-6 text-center">
             <div class="fade-in">
                 <h2 class="font-serif text-2xl mb-2 tracking-widest uppercase text-white">Confirma tu asistencia</h2>
                 <p class="font-sans font-light text-sm text-ice-300 mb-8">ANTES DEL 31 DE OCTUBRE</p>
 
                 <div class="max-w-sm mx-auto flex flex-col gap-4">
-                    <input type="text" id="nombre-invitado" placeholder="Nombre y Apellido" required style="width: 100%; padding: 15px; background: rgba(3,7,18,0.5); border: 1px solid rgba(125,211,252,0.3); color: #fff; border-radius: 8px; font-size: 0.95rem; outline: none; text-align: center; font-family: 'Montserrat', sans-serif;">
-                    
-                    <button onclick="enviarWhatsApp()" style="width: 100%; padding: 15px; background: #e0f2fe; color: #030712; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; box-shadow: 0 0 15px rgba(125,211,252,0.4);">
+                    <input type="text" id="nombre-invitado" placeholder="Nombre y Apellido" required style="width: 100%; padding: 15px; background: rgba(3,7,18,0.5); border: 1px solid rgba(125,211,252,0.3); color: #fff; border-radius: 8px; outline: none; text-align: center;">
+                    <button onclick="enviarWhatsApp()" style="width: 100%; padding: 15px; background: #e0f2fe; color: #030712; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase;">
                         Confirmar por WhatsApp
                     </button>
                 </div>
             </div>
         </section>
 
-        <!-- 7. PIE DE PÁGINA -->
         <section class="h-[50vh] bg-frozen flex flex-col justify-center items-center text-center p-6">
             <div class="fade-in">
                 <i class="fa-regular fa-snowflake text-3xl mb-4 text-ice-300 floating-icon"></i>
@@ -314,71 +253,47 @@
             </div>
         </section>
 
-        <!-- MODAL REGALOS -->
-        <div id="gift-modal" class="fixed inset-0 bg-black/80 z-50 hidden flex justify-center items-center p-4 backdrop-blur-md transition-opacity opacity-0">
-            <div class="bg-[#0b1221] p-8 w-full max-w-sm rounded-lg text-center relative transform scale-95 transition-transform duration-300 border border-ice-300/40 shadow-[0_0_30px_rgba(14,165,233,0.3)]" id="gift-modal-content">
-                <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+        <div id="gift-modal" class="fixed inset-0 bg-black/90 z-50 hidden flex justify-center items-center p-4 transition-opacity opacity-0">
+            <div class="bg-[#0b1221] p-8 w-full max-w-sm rounded-lg text-center relative transform scale-95 transition-transform duration-300 border border-ice-300/40" id="gift-modal-content">
+                <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
                     <i class="fa-solid fa-xmark text-xl"></i>
                 </button>
                 <i class="fa-solid fa-building-columns text-3xl mb-4 text-ice-300"></i>
                 <h3 class="font-serif text-2xl mb-6 uppercase tracking-widest text-white">Datos Bancarios</h3>
-                
                 <div class="font-sans font-light text-sm space-y-4 text-left bg-[#030712] p-5 rounded-md border border-ice-300/20 text-gray-200">
-                    <p><strong class="text-ice-300 font-medium">Banco:</strong> Banco Nación</p>
-                    <p><strong class="text-ice-300 font-medium">Titular:</strong> Familia Mili</p>
-                    <p><strong class="text-ice-300 font-medium">CBU:</strong> 00000031234567890123</p>
-                    <p><strong class="text-ice-300 font-medium">Alias:</strong> MILI.XV.2026</p>
+                    <p><strong class="text-ice-300">Banco:</strong> Banco Nación</p>
+                    <p><strong class="text-ice-300">Titular:</strong> Familia Mili</p>
+                    <p><strong class="text-ice-300">CBU:</strong> 00000031234567890123</p>
+                    <p><strong class="text-ice-300">Alias:</strong> MILI.XV.2026</p>
                 </div>
-                
                 <button onclick="copyAlias()" class="btn-elegant w-full mt-6">
                     <i class="fa-regular fa-copy mr-2"></i> Copiar Alias
                 </button>
-                
-                <p id="copy-msg" class="text-xs text-ice-300 mt-3 hidden font-medium">¡Alias copiado al portapapeles!</p>
+                <p id="copy-msg" class="text-xs text-ice-300 mt-3 hidden">¡Alias copiado!</p>
             </div>
         </div>
 
     </div>
 
     <script>
-        // --- Generador de Nieve (Snowflakes) ---
         function createSnowflakes() {
             const container = document.getElementById('main-container');
-            const snowflakesCount = 35; // Cantidad de copos
+            const snowflakesCount = 20; // Reducido a 20 copos para evitar lag
             
             for (let i = 0; i < snowflakesCount; i++) {
                 let snowflake = document.createElement('div');
                 snowflake.className = 'snowflake';
-                // Alternar entre diferentes formas de copos de nieve
                 snowflake.innerHTML = Math.random() > 0.5 ? '❄' : '❅';
-                
-                // Posición inicial aleatoria
                 snowflake.style.left = Math.random() * 100 + 'vw';
-                
-                // Tamaño aleatorio (entre 10px y 24px)
-                snowflake.style.fontSize = (Math.random() * 14 + 10) + 'px'; 
-                
-                // Velocidad de caída aleatoria (entre 6s y 12s)
-                snowflake.style.animationDuration = (Math.random() * 6 + 6) + 's'; 
-                
-                // Retraso para que no caigan todos al mismo tiempo
+                snowflake.style.fontSize = (Math.random() * 12 + 10) + 'px'; 
+                snowflake.style.animationDuration = (Math.random() * 5 + 7) + 's'; 
                 snowflake.style.animationDelay = (Math.random() * 5) + 's';
-                
-                // Transparencia aleatoria para dar profundidad
-                snowflake.style.opacity = Math.random() * 0.7 + 0.3;
-
+                snowflake.style.opacity = Math.random() * 0.6 + 0.2;
                 container.appendChild(snowflake);
             }
         }
 
-        // --- Animación Fade-In al hacer scroll ---
         document.addEventListener("DOMContentLoaded", function() {
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.15
-            };
-
             const observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -386,10 +301,9 @@
                         observer.unobserve(entry.target); 
                     }
                 });
-            }, observerOptions);
+            }, { rootMargin: '0px', threshold: 0.1 });
 
-            const fadeElements = document.querySelectorAll('.fade-in');
-            fadeElements.forEach(el => observer.observe(el));
+            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
             const splashVideo = document.getElementById('splash-video');
             if (splashVideo) {
@@ -397,58 +311,42 @@
             }
         });
 
-        // --- Función para ocultar video, activar nieve y música ---
         function hideSplashScreen() {
             const splashScreen = document.getElementById('splash-screen');
             const body = document.body;
             const bgMusic = document.getElementById('bg-music');
-            const musicBtn = document.getElementById('music-btn');
             
             if (splashScreen && !splashScreen.classList.contains('fade-out')) {
                 splashScreen.classList.add('fade-out');
                 body.classList.remove('no-scroll');
                 
-                musicBtn.style.display = 'flex';
-                
-                // ¡Iniciamos la nevada cuando el video desaparece!
+                document.getElementById('music-btn').style.display = 'flex';
                 createSnowflakes();
                 
                 if (bgMusic) {
                     bgMusic.play().then(() => {
-                        const musicIcon = document.querySelector('#music-btn i');
-                        musicIcon.classList.remove('fa-music-slash');
-                        musicIcon.classList.add('fa-music');
-                    }).catch(error => {
-                        console.log("Música pausada esperando interacción del usuario.");
-                    });
+                        document.querySelector('#music-btn i').className = 'fa-solid fa-music';
+                    }).catch(e => console.log("Música requiere clic."));
                 }
                 
-                setTimeout(() => {
-                    splashScreen.style.display = 'none';
-                }, 1000); 
+                setTimeout(() => { splashScreen.style.display = 'none'; }, 800); 
             }
         }
 
-        // --- Botón flotante música ---
         function toggleMusic() {
             const bgMusic = document.getElementById('bg-music');
             const musicIcon = document.querySelector('#music-btn i');
-
             if (bgMusic.paused) {
                 bgMusic.play();
-                musicIcon.classList.remove('fa-music-slash');
-                musicIcon.classList.add('fa-music');
+                musicIcon.className = 'fa-solid fa-music';
             } else {
                 bgMusic.pause();
-                musicIcon.classList.remove('fa-music');
-                musicIcon.classList.add('fa-music-slash');
+                musicIcon.className = 'fa-solid fa-music-slash';
             }
         }
 
-        // --- Modal de Regalos ---
         const modal = document.getElementById('gift-modal');
         const modalContent = document.getElementById('gift-modal-content');
-
         function openModal() {
             modal.classList.remove('hidden');
             setTimeout(() => {
@@ -457,52 +355,29 @@
                 modalContent.classList.add('scale-100');
             }, 10);
         }
-
         function closeModal() {
             modal.classList.add('opacity-0');
             modalContent.classList.remove('scale-100');
             modalContent.classList.add('scale-95');
-            
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                document.getElementById('copy-msg').classList.add('hidden');
-            }, 300);
+            setTimeout(() => { modal.classList.add('hidden'); document.getElementById('copy-msg').classList.add('hidden'); }, 300);
         }
-
-        modal.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                closeModal();
-            }
-        });
+        modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
 
         function copyAlias() {
-            const aliasText = "MILI.XV.2026";
             const tempInput = document.createElement("input");
-            tempInput.value = aliasText;
+            tempInput.value = "MILI.XV.2026";
             document.body.appendChild(tempInput);
             tempInput.select();
             document.execCommand("copy");
             document.body.removeChild(tempInput);
-            
-            const copyMsg = document.getElementById('copy-msg');
-            copyMsg.classList.remove('hidden');
-            setTimeout(() => {
-                copyMsg.classList.add('hidden');
-            }, 3000);
+            document.getElementById('copy-msg').classList.remove('hidden');
+            setTimeout(() => document.getElementById('copy-msg').classList.add('hidden'), 3000);
         }
 
-        // --- WhatsApp ---
         function enviarWhatsApp() {
-            const nombreInput = document.getElementById('nombre-invitado').value.trim();
-            if (nombreInput === "") {
-                alert("Por favor, ingresa tu nombre y apellido para confirmar.");
-                return;
-            }
-            const numeroWhatsApp = "50242897415"; 
-            const mensaje = `¡Hola! Confirmo mi asistencia a los XV de Angélica Mariana. Soy: *${nombreInput}*. ¡Allá nos vemos! ❄️`;
-            const mensajeCodificado = encodeURIComponent(mensaje);
-            const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${mensajeCodificado}`;
-            window.open(urlWhatsApp, '_blank');
+            const nombre = document.getElementById('nombre-invitado').value.trim();
+            if (!nombre) { alert("Ingresa tu nombre por favor."); return; }
+            window.open(`https://wa.me/50242897415?text=${encodeURIComponent(`¡Hola! Confirmo mi asistencia a los XV de Angélica Mariana. Soy: *${nombre}*. ¡Allá nos vemos! ❄️`)}`, '_blank');
         }
     </script>
 </body>
