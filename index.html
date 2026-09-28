@@ -57,9 +57,8 @@
             position: relative;
         }
 
-        /* Texturas y Fondos Temática Congelada con tu imagen */
+        /* Texturas y Fondos */
         .bg-frozen {
-            /* Textura de hielo/nieve usando tu archivo local fondo.png con overlay oscuro */
             background-image: linear-gradient(rgba(3, 7, 18, 0.6), rgba(3, 7, 18, 0.8)), url('fondo.png');
             background-size: cover;
             background-position: center;
@@ -67,7 +66,6 @@
         }
 
         .bg-ice-gradient {
-            /* Degradado gélido elegante */
             background: linear-gradient(135deg, #082f49 0%, #030712 50%, #082f49 100%);
             color: #e0f2fe;
             border-top: 1px solid rgba(125, 211, 252, 0.2);
@@ -85,6 +83,45 @@
             transform: translateY(0);
         }
 
+        /* --- NUEVAS ANIMACIONES --- */
+        
+        /* 1. Resplandor del título (Ice Glow) */
+        @keyframes iceGlow {
+            0%, 100% { text-shadow: 0 0 10px rgba(125,211,252,0.6), 0 0 20px rgba(125,211,252,0.4); }
+            50% { text-shadow: 0 0 20px rgba(125,211,252,1), 0 0 40px rgba(125,211,252,0.8), 0 0 60px rgba(255,255,255,0.6); }
+        }
+        .glow-text {
+            animation: iceGlow 3s infinite ease-in-out;
+        }
+
+        /* 2. Iconos flotantes */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .floating-icon {
+            animation: float 4s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        /* 3. Nieve Cayendo (Snowflakes) */
+        .snowflake {
+            position: fixed;
+            top: -10vh;
+            color: #fff;
+            user-select: none;
+            z-index: 40; /* Detrás del modal, adelante del fondo */
+            pointer-events: none;
+            text-shadow: 0 0 5px rgba(255,255,255,0.8);
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) translateX(20px) rotate(360deg); opacity: 0; }
+        }
+        /* -------------------------- */
+
         /* Botones elegantes congelados */
         .btn-elegant {
             display: inline-block;
@@ -98,12 +135,14 @@
             cursor: pointer;
             background: rgba(14, 165, 233, 0.1);
             border-radius: 4px;
+            position: relative;
+            overflow: hidden;
         }
         
         .btn-elegant:hover {
             background: #7dd3fc;
             color: #030712;
-            box-shadow: 0 0 15px rgba(125, 211, 252, 0.5);
+            box-shadow: 0 0 20px rgba(125, 211, 252, 0.6);
             border-color: #7dd3fc;
         }
 
@@ -139,32 +178,43 @@
             left: 0;
         }
 
-        .skip-btn {
-            position: absolute;
-            bottom: 40px;
-            right: 20px;
-            background: rgba(3, 7, 18, 0.6);
-            color: #e0f2fe;
+        /* Botón de Música Flotante */
+        #music-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 45px;
+            height: 45px;
+            background: rgba(3, 7, 18, 0.7);
             border: 1px solid rgba(125, 211, 252, 0.5);
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            border-radius: 50%;
+            color: #7dd3fc;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
             cursor: pointer;
-            z-index: 101;
             backdrop-filter: blur(5px);
+            box-shadow: 0 0 10px rgba(125, 211, 252, 0.2);
             transition: all 0.3s ease;
         }
-
-        .skip-btn:hover {
-            background: rgba(125, 211, 252, 0.2);
-            border-color: #7dd3fc;
+        #music-btn:hover {
+            background: rgba(14, 165, 233, 0.3);
+            transform: scale(1.1);
         }
     </style>
 </head>
 <body class="no-scroll">
+
+    <!-- Audio de Fondo (loop) -->
+    <audio id="bg-music" loop>
+        <source src="musica.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Botón flotante música -->
+    <button id="music-btn" onclick="toggleMusic()">
+        <i class="fa-solid fa-music-slash"></i>
+    </button>
 
     <!-- Pantalla de Bienvenida con Video -->
     <div id="splash-screen">
@@ -172,13 +222,14 @@
     </div>
 
     <!-- Contenedor móvil -->
-    <div class="app-container">
+    <div class="app-container" id="main-container">
 
         <!-- 1. INICIO (Hero Section) -->
         <section class="h-screen w-full bg-frozen flex flex-col justify-center items-center text-center p-6 relative">
             <div class="fade-in z-10">
                 <p class="font-sans font-light tracking-[0.3em] text-sm mb-2 text-ice-300">MIS DULCES XVI</p>
-                <h1 class="font-serif text-6xl md:text-7xl text-white tracking-widest drop-shadow-[0_0_15px_rgba(125,211,252,0.8)]">ANGELICA<br>MARIANA</h1>
+                <!-- Título con efecto Glow animado -->
+                <h1 class="font-serif text-6xl md:text-7xl text-white tracking-widest glow-text">ANGELICA<br>MARIANA</h1>
                 <p class="font-sans font-light text-xs mt-4 text-gray-300 italic">"Una noche mágica bajo el hielo"</p>
             </div>
             
@@ -191,7 +242,8 @@
         <!-- 2. ¿CUÁNDO? -->
         <section class="bg-ice-gradient py-24 px-8 text-center flex flex-col items-center justify-center">
             <div class="fade-in">
-                <i class="fa-regular fa-calendar text-4xl mb-6 text-ice-300 drop-shadow-[0_0_10px_rgba(125,211,252,0.5)]"></i>
+                <!-- Icono Flotante -->
+                <i class="fa-regular fa-calendar text-4xl mb-6 text-ice-300 drop-shadow-[0_0_10px_rgba(125,211,252,0.5)] floating-icon"></i>
                 <h2 class="font-serif text-3xl tracking-widest mb-4 uppercase text-white">¿Cuándo?</h2>
                 <div class="font-sans font-light space-y-2 text-lg text-gray-200">
                     <p class="tracking-wider">21 DE NOVIEMBRE 2026</p>
@@ -203,7 +255,8 @@
         <!-- 3. ¿DÓNDE? -->
         <section class="bg-frozen py-24 px-8 text-center flex flex-col items-center justify-center">
             <div class="fade-in w-full max-w-sm mx-auto p-8 border border-ice-300/30 bg-black/50 backdrop-blur-md rounded-lg">
-                <i class="fa-solid fa-location-dot text-4xl mb-6 text-ice-300"></i>
+                <!-- Icono Flotante -->
+                <i class="fa-solid fa-location-dot text-4xl mb-6 text-ice-300 floating-icon"></i>
                 <h2 class="font-serif text-3xl tracking-widest mb-4 uppercase text-white">¿Dónde?</h2>
                 <p class="font-sans font-light tracking-wider text-sm mb-4 uppercase text-gray-300">Casa de habitación <br><span class="text-ice-100 font-medium">4:00 p.m.</span></p>
                 <p class="font-sans font-light tracking-wider text-sm mb-8 uppercase text-gray-300">Casa de la Cultura <br><span class="text-ice-100 font-medium">6:00 p.m.</span></p>
@@ -214,18 +267,21 @@
         <!-- 4. REGALOS -->
         <section class="bg-[#0b1221] py-24 px-8 text-center flex flex-col items-center justify-center border-t border-ice-300/10">
             <div class="fade-in max-w-sm">
-                <i class="fa-solid fa-gift text-4xl mb-6 text-ice-300"></i>
+                <!-- Icono Flotante -->
+                <i class="fa-solid fa-gift text-4xl mb-6 text-ice-300 floating-icon"></i>
                 <h2 class="font-serif text-3xl tracking-widest mb-6 uppercase text-white">Regalos</h2>
                 <p class="font-sans font-light text-sm leading-relaxed mb-8 text-gray-300">
                     Nada es más importante que tu presencia, pero si deseas hacerme un presente, puedes depositarlo en el sobre que te haré llegar.
                 </p>
+                <button onclick="openModal()" class="btn-elegant w-full">Ver Cuenta</button>
             </div>
         </section>
 
         <!-- 5. DRESS CODE -->
         <section class="bg-frozen py-24 px-8 text-center flex flex-col items-center justify-center">
             <div class="fade-in p-6 bg-black/40 backdrop-blur-sm rounded-lg border border-ice-300/20">
-                <i class="fa-regular fa-gem text-4xl mb-6 text-ice-300 drop-shadow-[0_0_10px_rgba(125,211,252,0.5)]"></i>
+                <!-- Icono Flotante -->
+                <i class="fa-regular fa-gem text-4xl mb-6 text-ice-300 drop-shadow-[0_0_10px_rgba(125,211,252,0.5)] floating-icon"></i>
                 <h2 class="font-serif text-3xl tracking-widest mb-4 uppercase text-white">Dress Code</h2>
                 <p class="font-sans font-light tracking-widest text-lg uppercase text-ice-100 mb-4">Elegante / Etiqueta</p>
                 <p class="font-sans text-xs text-gray-300 uppercase tracking-wider border-t border-ice-300/30 pt-4">
@@ -234,7 +290,7 @@
             </div>
         </section>
 
-        <!-- 6. CONFIRMAR ASISTENCIA (WHATSAPP) -->
+        <!-- 6. CONFIRMAR ASISTENCIA -->
         <section id="asistencia" class="bg-ice-gradient py-20 px-6 text-center">
             <div class="fade-in">
                 <h2 class="font-serif text-2xl mb-2 tracking-widest uppercase text-white">Confirma tu asistencia</h2>
@@ -253,8 +309,8 @@
         <!-- 7. PIE DE PÁGINA -->
         <section class="h-[50vh] bg-frozen flex flex-col justify-center items-center text-center p-6">
             <div class="fade-in">
-                <i class="fa-regular fa-snowflake text-2xl mb-4 text-ice-300"></i>
-                <h2 class="font-serif text-4xl md:text-5xl text-white tracking-[0.2em] uppercase drop-shadow-[0_0_15px_rgba(125,211,252,0.8)]">Te Espero</h2>
+                <i class="fa-regular fa-snowflake text-3xl mb-4 text-ice-300 floating-icon"></i>
+                <h2 class="font-serif text-4xl md:text-5xl text-white tracking-[0.2em] uppercase glow-text">Te Espero</h2>
             </div>
         </section>
 
@@ -282,10 +338,40 @@
             </div>
         </div>
 
-    </div> <!-- Fin contenedor móvil -->
+    </div>
 
     <script>
-        // --- 1. Animación Fade-In al hacer scroll ---
+        // --- Generador de Nieve (Snowflakes) ---
+        function createSnowflakes() {
+            const container = document.getElementById('main-container');
+            const snowflakesCount = 35; // Cantidad de copos
+            
+            for (let i = 0; i < snowflakesCount; i++) {
+                let snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                // Alternar entre diferentes formas de copos de nieve
+                snowflake.innerHTML = Math.random() > 0.5 ? '❄' : '❅';
+                
+                // Posición inicial aleatoria
+                snowflake.style.left = Math.random() * 100 + 'vw';
+                
+                // Tamaño aleatorio (entre 10px y 24px)
+                snowflake.style.fontSize = (Math.random() * 14 + 10) + 'px'; 
+                
+                // Velocidad de caída aleatoria (entre 6s y 12s)
+                snowflake.style.animationDuration = (Math.random() * 6 + 6) + 's'; 
+                
+                // Retraso para que no caigan todos al mismo tiempo
+                snowflake.style.animationDelay = (Math.random() * 5) + 's';
+                
+                // Transparencia aleatoria para dar profundidad
+                snowflake.style.opacity = Math.random() * 0.7 + 0.3;
+
+                container.appendChild(snowflake);
+            }
+        }
+
+        // --- Animación Fade-In al hacer scroll ---
         document.addEventListener("DOMContentLoaded", function() {
             const observerOptions = {
                 root: null,
@@ -305,21 +391,37 @@
             const fadeElements = document.querySelectorAll('.fade-in');
             fadeElements.forEach(el => observer.observe(el));
 
-            // Configurar finalización automática del video
             const splashVideo = document.getElementById('splash-video');
             if (splashVideo) {
                 splashVideo.addEventListener('ended', hideSplashScreen);
             }
         });
 
-        // Función para ocultar el video y habilitar el scroll
+        // --- Función para ocultar video, activar nieve y música ---
         function hideSplashScreen() {
             const splashScreen = document.getElementById('splash-screen');
             const body = document.body;
+            const bgMusic = document.getElementById('bg-music');
+            const musicBtn = document.getElementById('music-btn');
             
             if (splashScreen && !splashScreen.classList.contains('fade-out')) {
                 splashScreen.classList.add('fade-out');
                 body.classList.remove('no-scroll');
+                
+                musicBtn.style.display = 'flex';
+                
+                // ¡Iniciamos la nevada cuando el video desaparece!
+                createSnowflakes();
+                
+                if (bgMusic) {
+                    bgMusic.play().then(() => {
+                        const musicIcon = document.querySelector('#music-btn i');
+                        musicIcon.classList.remove('fa-music-slash');
+                        musicIcon.classList.add('fa-music');
+                    }).catch(error => {
+                        console.log("Música pausada esperando interacción del usuario.");
+                    });
+                }
                 
                 setTimeout(() => {
                     splashScreen.style.display = 'none';
@@ -327,7 +429,23 @@
             }
         }
 
-        // --- 2. Lógica del Modal de Regalos ---
+        // --- Botón flotante música ---
+        function toggleMusic() {
+            const bgMusic = document.getElementById('bg-music');
+            const musicIcon = document.querySelector('#music-btn i');
+
+            if (bgMusic.paused) {
+                bgMusic.play();
+                musicIcon.classList.remove('fa-music-slash');
+                musicIcon.classList.add('fa-music');
+            } else {
+                bgMusic.pause();
+                musicIcon.classList.remove('fa-music');
+                musicIcon.classList.add('fa-music-slash');
+            }
+        }
+
+        // --- Modal de Regalos ---
         const modal = document.getElementById('gift-modal');
         const modalContent = document.getElementById('gift-modal-content');
 
@@ -357,10 +475,8 @@
             }
         });
 
-        // --- 3. Copiar al portapapeles ---
         function copyAlias() {
             const aliasText = "MILI.XV.2026";
-            
             const tempInput = document.createElement("input");
             tempInput.value = aliasText;
             document.body.appendChild(tempInput);
@@ -370,27 +486,21 @@
             
             const copyMsg = document.getElementById('copy-msg');
             copyMsg.classList.remove('hidden');
-            
             setTimeout(() => {
                 copyMsg.classList.add('hidden');
             }, 3000);
         }
 
-        // --- 4. Enviar WhatsApp ---
+        // --- WhatsApp ---
         function enviarWhatsApp() {
             const nombreInput = document.getElementById('nombre-invitado').value.trim();
-            
             if (nombreInput === "") {
                 alert("Por favor, ingresa tu nombre y apellido para confirmar.");
                 return;
             }
-
-            // TU NÚMERO DE WHATSAPP YA ESTÁ CONFIGURADO AQUÍ
             const numeroWhatsApp = "50242897415"; 
-
             const mensaje = `¡Hola! Confirmo mi asistencia a los XV de Angélica Mariana. Soy: *${nombreInput}*. ¡Allá nos vemos! ❄️`;
             const mensajeCodificado = encodeURIComponent(mensaje);
-
             const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${mensajeCodificado}`;
             window.open(urlWhatsApp, '_blank');
         }
