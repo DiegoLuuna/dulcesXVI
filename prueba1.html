@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis XV Mili</title>
+    
+    <!-- Fuentes Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Iconos FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Montserrat"', 'sans-serif'],
+                    },
+                    colors: {
+                        silver: {
+                            100: '#f3f4f6',
+                            300: '#d1d5db',
+                            500: '#9ca3af',
+                            700: '#374151',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Estilos base y de utilidad */
+        body {
+            background-color: #111;
+            color: #fff;
+            scroll-behavior: smooth;
+        }
+
+        /* Contenedor principal que simula pantalla de móvil en desktop */
+        .app-container {
+            max-width: 480px;
+            margin: 0 auto;
+            background-color: #000;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(255,255,255,0.05);
+            overflow-x: hidden;
+        }
+
+        /* Texturas y Fondos */
+        .bg-disco {
+            /* Textura de bolas de disco con overlay oscuro para legibilidad */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1578589318433-39b5de440c3f?q=80&w=1080&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Efecto Parallax */
+        }
+
+        .bg-silver-metallic {
+            /* Degradado para simular metal plateado */
+            background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 40%, #cccccc 60%, #ffffff 100%);
+            color: #000;
+        }
+
+        /* Animaciones de Scroll */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Estilos de inputs para el formulario */
+        .input-line {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #000;
+            border-radius: 0;
+            padding: 8px 0;
+            width: 100%;
+            outline: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            transition: border-color 0.3s;
+        }
+        .input-line:focus {
+            border-bottom-color: #666;
+        }
+        .input-line::placeholder {
+            color: #666;
+            font-weight: 300;
+        }
+
+        /* Radio buttons personalizados */
+        .radio-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        .radio-label input[type="radio"] {
+            margin-right: 8px;
+            accent-color: #000;
+        }
+
+        /* Botones elegantes */
+        .btn-elegant {
+            display: inline-block;
+            padding: 12px 30px;
+            border: 1px solid currentColor;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            background: transparent;
+        }
+        .btn-elegant:hover {
+            background: currentColor;
+            color: #fff; /* Se sobrescribe en el HTML según el tema */
+        }
+        .bg-silver-metallic .btn-elegant:hover {
+            color: #fff;
+            background: #000;
+            border-color: #000;
+        }
+        .bg-disco .btn-elegant:hover {
+            color: #000;
+            background: #fff;
+        }
+
+        body.no-scroll {
+            overflow: hidden;
+        }
+
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s ease-out;
+        }
+
+        #splash-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #splash-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .skip-btn {
+            position: absolute;
+            bottom: 40px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            z-index: 101;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        .skip-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: white;
+        }
+    </style>
+</head>
+<body class="no-scroll">
+
+    <!-- Pantalla de Bienvenida con Video -->
+    <div id="splash-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: 9999; background: #000; overflow: hidden;">
+    <video id="splash-video" autoplay muted playsinline src="intro.mp4" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;"></video>
+    <button class="skip-btn" onclick="hideSplashScreen()" style="position: absolute; bottom: 30px; right: 20px; z-index: 10; background: rgba(0,0,0,0.6); color: #fff; border: 1px solid #fff; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-family: inherit;">Omitir Video</button>
+</div>
+
+        <!-- 1. INICIO (Hero Section) -->
+        <section class="h-screen w-full bg-disco flex flex-col justify-center items-center text-center p-6 relative">
+            <div class="fade-in z-10">
+                <p class="font-sans font-light tracking-[0.3em] text-sm mb-2 text-gray-300">MIS XV</p>
+                <h1 class="font-serif text-7xl md:text-8xl text-white tracking-widest drop-shadow-lg">MILI</h1>
+            </div>
+            
+            <!-- Indicador de scroll -->
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce opacity-70">
+                <i class="fa-solid fa-chevron-down text-xl"></i>
+            </div>
+        </section>
+
+        <!-- 2. ¿CUÁNDO? -->
+        <section class="bg-silver-metallic py-24 px-8 text-center flex flex-col items-center justify-center">
+            <div class="fade-in">
+                <i class="fa-regular fa-calendar text-4xl mb-6 text-gray-800"></i>
+                <h2 class="font-serif text-3xl tracking-widest mb-4 uppercase">¿Cuándo?</h2>
+                <div class="font-sans font-light space-y-2 text-lg">
+                    <p class="tracking-wider">12 DE SEPTIEMBRE 2026</p>
+                    <p class="font-medium">21:00 HS</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. ¿DÓNDE? -->
+        <section class="bg-disco py-24 px-8 text-center flex flex-col items-center justify-center">
+            <div class="fade-in w-full max-w-sm mx-auto p-8 border border-white/30 bg-black/40 backdrop-blur-sm rounded-sm">
+                <i class="fa-solid fa-location-dot text-4xl mb-6 text-white"></i>
+                <h2 class="font-serif text-3xl tracking-widest mb-4 uppercase">¿Dónde?</h2>
+                <p class="font-sans font-light tracking-wider text-lg mb-8 uppercase">Salón Santa Bárbara</p>
+                <a href="#" class="btn-elegant text-white w-full">Cómo llegar</a>
+            </div>
+        </section>
+
+        <!-- 4. REGALOS -->
+        <section class="bg-white text-black py-24 px-8 text-center flex flex-col items-center justify-center">
+            <div class="fade-in max-w-sm">
+                <i class="fa-solid fa-gift text-4xl mb-6 text-gray-800"></i>
+                <h2 class="font-serif text-3xl tracking-widest mb-6 uppercase">Regalos</h2>
+                <p class="font-sans font-light text-sm leading-relaxed mb-8 text-gray-600">
+                    Nada es más importante que tu presencia, pero si deseas hacerme un presente, puedes depositarlo en la siguiente cuenta.
+                </p>
+                <button onclick="openModal()" class="btn-elegant text-black border-black w-full font-medium">Ver Cuenta</button>
+            </div>
+        </section>
+
+        <!-- 5. DRESS CODE -->
+        <section class="bg-disco py-24 px-8 text-center flex flex-col items-center justify-center">
+            <div class="fade-in">
+                <i class="fa-regular fa-gem text-4xl mb-6 text-white"></i>
+                <h2 class="font-serif text-3xl tracking-widest mb-4 uppercase">Dress Code</h2>
+                <p class="font-sans font-light tracking-widest text-xl uppercase">Elegante</p>
+            </div>
+        </section>
+
+        <!-- 6. RSVP (CONFIRMA TU ASISTENCIA) -->
+        <section class="bg-silver-metallic py-24 px-8 flex flex-col items-center justify-center">
+            <div class="fade-in w-full max-w-sm">
+                <div class="text-center mb-10">
+                    <i class="fa-regular fa-envelope text-4xl mb-6 text-gray-800"></i>
+                    <h2 class="font-serif text-3xl tracking-widest uppercase">Confirma tu<br>Asistencia</h2>
+                </div>
+
+                <div id="form-container" class="bg-white/50 p-6 shadow-sm rounded-sm backdrop-blur-md">
+                    <form id="rsvp-form" onsubmit="submitForm(event)" class="space-y-6">
+                        
+                        <!-- Nombre -->
+                        <div>
+                            <input type="text" id="nombre" required placeholder="Nombre *" class="input-line">
+                        </div>
+
+                        <!-- Apellido -->
+                        <div>
+                            <input type="text" id="apellido" required placeholder="Apellido *" class="input-line">
+                        </div>
+
+                        <!-- Asistencia -->
+                        <div class="pt-2">
+                            <p class="font-sans text-sm mb-3 text-gray-700">¿Confirmas tu asistencia? *</p>
+                            <label class="radio-label">
+                                <input type="radio" name="asistencia" value="si" required>
+                                ¡Sí, confirmo!
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="asistencia" value="no">
+                                No podré asistir
+                            </label>
+                        </div>
+
+                        <!-- Requerimiento alimentario -->
+                        <div class="pt-2">
+                            <p class="font-sans text-sm mb-2 text-gray-700">¿Algún requerimiento en la alimentación?</p>
+                            <input type="text" id="comida" placeholder="Ej: Vegetariano, Celíaco, Ninguno" class="input-line">
+                        </div>
+
+                        <!-- Canción -->
+                        <div class="pt-2">
+                            <p class="font-sans text-sm mb-2 text-gray-700">¿Qué canción no puede faltar?</p>
+                            <input type="text" id="cancion" placeholder="Nombre de la canción o artista" class="input-line">
+                        </div>
+
+                        <button type="submit" class="btn-elegant text-black border-black w-full mt-4 font-semibold bg-white/40">
+                            Confirmar
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Mensaje de éxito oculto -->
+                <div id="success-message" class="hidden text-center bg-white p-8 rounded-sm shadow-sm">
+                    <i class="fa-solid fa-check text-4xl text-green-600 mb-4"></i>
+                    <h3 class="font-serif text-2xl mb-2 text-black">¡Gracias!</h3>
+                    <p class="font-sans font-light text-gray-600">Tu confirmación ha sido enviada exitosamente.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 7. PIE DE PÁGINA -->
+        <section class="h-[60vh] bg-disco flex flex-col justify-center items-center text-center p-6">
+            <div class="fade-in">
+                <h2 class="font-serif text-5xl md:text-6xl text-white tracking-[0.2em] uppercase drop-shadow-lg">Te Espero</h2>
+            </div>
+        </section>
+
+        <!-- MODAL REGALOS -->
+        <div id="gift-modal" class="fixed inset-0 bg-black/80 z-50 hidden flex justify-center items-center p-4 backdrop-blur-sm transition-opacity opacity-0">
+            <div class="bg-silver-metallic p-8 w-full max-w-sm rounded-sm text-center relative transform scale-95 transition-transform duration-300" id="gift-modal-content">
+                <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-600 hover:text-black">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+                <i class="fa-solid fa-building-columns text-3xl mb-4 text-gray-800"></i>
+                <h3 class="font-serif text-2xl mb-6 uppercase tracking-widest">Datos Bancarios</h3>
+                
+                <div class="font-sans font-light text-sm space-y-4 text-left bg-white/60 p-4 rounded-sm border border-gray-300">
+                    <p><strong>Banco:</strong> Banco Nación</p>
+                    <p><strong>Titular:</strong> Familia Mili</p>
+                    <p><strong>CBU:</strong> 00000031234567890123</p>
+                    <p><strong>Alias:</strong> MILI.XV.2026</p>
+                </div>
+                
+                <button onclick="copyAlias()" class="btn-elegant text-black border-black w-full mt-6 bg-white">
+                    <i class="fa-regular fa-copy mr-2"></i> Copiar Alias
+                </button>
+                
+                <!-- Mensaje copiado -->
+                <p id="copy-msg" class="text-xs text-green-700 mt-3 hidden font-medium">¡Alias copiado al portapapeles!</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- 1. Animación Fade-In al hacer scroll ---
+        document.addEventListener("DOMContentLoaded", function() {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); // Solo animar una vez
+                    }
+                });
+            }, observerOptions);
+
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach(el => observer.observe(el));
+
+            // Configurar finalización automática del video
+            const splashVideo = document.getElementById('splash-video');
+            if (splashVideo) {
+                splashVideo.addEventListener('ended', hideSplashScreen);
+            }
+        });
+
+        // Función para ocultar el video y habilitar el scroll
+        function hideSplashScreen() {
+            const splashScreen = document.getElementById('splash-screen');
+            const body = document.body;
+            
+            if (splashScreen && !splashScreen.classList.contains('fade-out')) {
+                // Iniciar transición de desvanecimiento
+                splashScreen.classList.add('fade-out');
+                
+                // Habilitar el scroll en la página principal
+                body.classList.remove('no-scroll');
+                
+                // Remover el contenedor de video para no interferir con clicks posteriores
+                setTimeout(() => {
+                    splashScreen.style.display = 'none';
+                }, 1000); // 1 segundo coincidiendo con la transición CSS
+            }
+        }
+
+        // --- 2. Lógica del Formulario RSVP ---
+        function submitForm(event) {
+            event.preventDefault(); // Evita que la página se recargue
+            
+            // Aquí iría la lógica para enviar los datos a un backend o Firebase.
+            // Por ahora, simulamos el envío exitoso mostrando el mensaje.
+            
+            const formContainer = document.getElementById('form-container');
+            const successMessage = document.getElementById('success-message');
+            
+            formContainer.classList.add('hidden');
+            successMessage.classList.remove('hidden');
+        }
+
+        // --- 3. Lógica del Modal de Regalos ---
+        const modal = document.getElementById('gift-modal');
+        const modalContent = document.getElementById('gift-modal-content');
+
+        function openModal() {
+            modal.classList.remove('hidden');
+            // Pequeño delay para permitir que el display:block se aplique antes de la opacidad
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+            
+            // Esperar a que termine la transición para ocultarlo
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.getElementById('copy-msg').classList.add('hidden'); // Ocultar mensaje de copiado si estaba visible
+            }, 300);
+        }
+
+        // Cerrar modal al hacer clic fuera del contenido
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // --- 4. Copiar al portapapeles ---
+        function copyAlias() {
+            const aliasText = "MILI.XV.2026";
+            
+            // Método compatible con navegadores e iframes
+            const tempInput = document.createElement("input");
+            tempInput.value = aliasText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            
+            // Mostrar mensaje de éxito
+            const copyMsg = document.getElementById('copy-msg');
+            copyMsg.classList.remove('hidden');
+            
+            // Ocultar mensaje después de 3 segundos
+            setTimeout(() => {
+                copyMsg.classList.add('hidden');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
