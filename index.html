@@ -206,8 +206,8 @@
         <!-- 1. INICIO (Hero Section) -->
         <section class="h-screen w-full bg-disco flex flex-col justify-center items-center text-center p-6 relative">
             <div class="fade-in z-10">
-                <p class="font-sans font-light tracking-[0.3em] text-sm mb-2 text-gray-300">MIS XV</p>
-                <h1 class="font-serif text-7xl md:text-8xl text-white tracking-widest drop-shadow-lg">MILI</h1>
+                <p class="font-sans font-light tracking-[0.3em] text-sm mb-2 text-gray-300">MIS DULCES XVI</p>
+                <h1 class="font-serif text-7xl md:text-8xl text-white tracking-widest drop-shadow-lg">ANGELICA MARIANA</h1>
             </div>
             
             <!-- Indicador de scroll -->
@@ -222,8 +222,8 @@
                 <i class="fa-regular fa-calendar text-4xl mb-6 text-gray-800"></i>
                 <h2 class="font-serif text-3xl tracking-widest mb-4 uppercase">¿Cuándo?</h2>
                 <div class="font-sans font-light space-y-2 text-lg">
-                    <p class="tracking-wider">12 DE SEPTIEMBRE 2026</p>
-                    <p class="font-medium">21:00 HS</p>
+                    <p class="tracking-wider">21 DE NOVIEMBRE 2026</p>
+                    <p class="font-medium">16:00 HS</p>
                 </div>
             </div>
         </section>
@@ -233,7 +233,8 @@
             <div class="fade-in w-full max-w-sm mx-auto p-8 border border-white/30 bg-black/40 backdrop-blur-sm rounded-sm">
                 <i class="fa-solid fa-location-dot text-4xl mb-6 text-white"></i>
                 <h2 class="font-serif text-3xl tracking-widest mb-4 uppercase">¿Dónde?</h2>
-                <p class="font-sans font-light tracking-wider text-lg mb-8 uppercase">Salón Santa Bárbara</p>
+                <p class="font-sans font-light tracking-wider text-lg mb-8 uppercase">Casa de habitación 4:00p.m.</p>
+                 <p class="font-sans font-light tracking-wider text-lg mb-8 uppercase">Casa de la Cultura 6:00p.m.</p>
                 <a href="#" class="btn-elegant text-white w-full">Cómo llegar</a>
             </div>
         </section>
@@ -244,7 +245,7 @@
                 <i class="fa-solid fa-gift text-4xl mb-6 text-gray-800"></i>
                 <h2 class="font-serif text-3xl tracking-widest mb-6 uppercase">Regalos</h2>
                 <p class="font-sans font-light text-sm leading-relaxed mb-8 text-gray-600">
-                    Nada es más importante que tu presencia, pero si deseas hacerme un presente, puedes depositarlo en la siguiente cuenta.
+                    Nada es más importante que tu presencia, pero si deseas hacerme un presente, puedes depositarlo en el sobre que te hare llegar.
                 </p>
                 <button onclick="openModal()" class="btn-elegant text-black border-black w-full font-medium">Ver Cuenta</button>
             </div>
@@ -255,71 +256,54 @@
             <div class="fade-in">
                 <i class="fa-regular fa-gem text-4xl mb-6 text-white"></i>
                 <h2 class="font-serif text-3xl tracking-widest mb-4 uppercase">Dress Code</h2>
-                <p class="font-sans font-light tracking-widest text-xl uppercase">Elegante</p>
+                <p class="font-sans font-light tracking-widest text-xl uppercase">Elegante/Etiqueta (Mujeres no azul, sera reservado para la festejada) </p>
             </div>
         </section>
 
-        <!-- 6. RSVP (CONFIRMA TU ASISTENCIA) -->
-        <section class="bg-silver-metallic py-24 px-8 flex flex-col items-center justify-center">
-            <div class="fade-in w-full max-w-sm">
-                <div class="text-center mb-10">
-                    <i class="fa-regular fa-envelope text-4xl mb-6 text-gray-800"></i>
-                    <h2 class="font-serif text-3xl tracking-widest uppercase">Confirma tu<br>Asistencia</h2>
-                </div>
+       <!-- SECCIÓN: CONFIRMAR ASISTENCIA (WHATSAPP) -->
+<section id="asistencia" style="padding: 60px 20px; background: #000; color: #fff; text-align: center;">
+    <h2 style="font-size: 1.8rem; margin-bottom: 10px; letter-spacing: 2px;">CONFIRMA TU ASISTENCIA</h2>
+    <p style="font-size: 0.9rem; color: #ccc; margin-bottom: 30px;">ANTES DEL 31 DE OCTUBRE</p>
 
-                <div id="form-container" class="bg-white/50 p-6 shadow-sm rounded-sm backdrop-blur-md">
-                    <form id="rsvp-form" onsubmit="submitForm(event)" class="space-y-6">
-                        
-                        <!-- Nombre -->
-                        <div>
-                            <input type="text" id="nombre" required placeholder="Nombre *" class="input-line">
-                        </div>
+    <!-- Formulario simplificado -->
+    <div style="max-width: 400px; margin: 0 auto; display: flex; flex-direction: column; gap: 15px;">
+        
+        <!-- Campo Nombre y Apellido -->
+        <input type="text" id="nombre-invitado" placeholder="Nombre y Apellido" required style="width: 100%; padding: 15px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: #fff; border-radius: 8px; font-size: 1rem; outline: none;">
+        
+        <!-- Botón para enviar a WhatsApp -->
+        <button onclick="enviarWhatsApp()" style="width: 100%; padding: 15px; background: #fff; color: #000; border: none; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;">
+            Confirmar por WhatsApp
+        </button>
+    </div>
+</section>
 
-                        <!-- Apellido -->
-                        <div>
-                            <input type="text" id="apellido" required placeholder="Apellido *" class="input-line">
-                        </div>
+<!-- Script de JavaScript para generar el enlace de WhatsApp -->
+<script>
+    function enviarWhatsApp() {
+        // 1. Obtener el valor del input
+        const nombreInput = document.getElementById('nombre-invitado').value.trim();
+        
+        // Validar que no esté vacío
+        if (nombreInput === "") {
+            alert("Por favor, ingresa tu nombre y apellido.");
+            return;
+        }
 
-                        <!-- Asistencia -->
-                        <div class="pt-2">
-                            <p class="font-sans text-sm mb-3 text-gray-700">¿Confirmas tu asistencia? *</p>
-                            <label class="radio-label">
-                                <input type="radio" name="asistencia" value="si" required>
-                                ¡Sí, confirmo!
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" name="asistencia" value="no">
-                                No podré asistir
-                            </label>
-                        </div>
+        // 2. CELULAR
+        const numeroWhatsApp = "50242897415"; 
 
-                        <!-- Requerimiento alimentario -->
-                        <div class="pt-2">
-                            <p class="font-sans text-sm mb-2 text-gray-700">¿Algún requerimiento en la alimentación?</p>
-                            <input type="text" id="comida" placeholder="Ej: Vegetariano, Celíaco, Ninguno" class="input-line">
-                        </div>
+        // 3. Crear el mensaje personalizado
+        const mensaje = `¡Hola! Confirmo mi asistencia a los XV. Soy: *${nombreInput}*. ¡Allá nos vemos!`;
 
-                        <!-- Canción -->
-                        <div class="pt-2">
-                            <p class="font-sans text-sm mb-2 text-gray-700">¿Qué canción no puede faltar?</p>
-                            <input type="text" id="cancion" placeholder="Nombre de la canción o artista" class="input-line">
-                        </div>
+        // 4. Codificar el mensaje para que funcione en la URL
+        const mensajeCodificado = encodeURIComponent(mensaje);
 
-                        <button type="submit" class="btn-elegant text-black border-black w-full mt-4 font-semibold bg-white/40">
-                            Confirmar
-                        </button>
-                    </form>
-                </div>
-
-                <!-- Mensaje de éxito oculto -->
-                <div id="success-message" class="hidden text-center bg-white p-8 rounded-sm shadow-sm">
-                    <i class="fa-solid fa-check text-4xl text-green-600 mb-4"></i>
-                    <h3 class="font-serif text-2xl mb-2 text-black">¡Gracias!</h3>
-                    <p class="font-sans font-light text-gray-600">Tu confirmación ha sido enviada exitosamente.</p>
-                </div>
-
-            </div>
-        </section>
+        // 5. Abrir el enlace de WhatsApp
+        const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${mensajeCodificado}`;
+        window.open(urlWhatsApp, '_blank');
+    }
+</script>
 
         <!-- 7. PIE DE PÁGINA -->
         <section class="h-[60vh] bg-disco flex flex-col justify-center items-center text-center p-6">
