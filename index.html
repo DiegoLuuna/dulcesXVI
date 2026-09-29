@@ -59,9 +59,9 @@
             position: relative;
         }
 
-        /* Texturas y Fondos (OPTIMIZADO: SIN background-attachment: fixed) */
+        /* Texturas y Fondos (OPTIMIZADO SIN LAG) */
         .bg-frozen {
-            background-image: linear-gradient(rgba(3, 7, 18, 0.75), rgba(3, 7, 18, 0.9)), url('fondo.png');
+            background-image: linear-gradient(rgba(3, 7, 18, 0.7), rgba(3, 7, 18, 0.85)), url('fondo.png');
             background-size: cover;
             background-position: center;
         }
@@ -69,59 +69,57 @@
         .bg-ice-gradient {
             background: linear-gradient(135deg, #082f49 0%, #030712 50%, #082f49 100%);
             color: #e0f2fe;
-            border-top: 1px solid rgba(125, 211, 252, 0.15);
-            border-bottom: 1px solid rgba(125, 211, 252, 0.15);
+            border-top: 1px solid rgba(125, 211, 252, 0.1);
+            border-bottom: 1px solid rgba(125, 211, 252, 0.1);
         }
 
         /* --- ANIMACIONES SMOOTH ENTRE APARTADOS --- */
         .fade-in {
             opacity: 0;
             transform: translateY(40px);
-            transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1), transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1), transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
         }
         .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* --- OTRAS ANIMACIONES (Brillo optimizado) --- */
+        /* ANIMACIONES LIGERAS */
         .glow-text {
             text-shadow: 0 0 15px rgba(125,211,252,0.8);
             animation: pulseGlow 3s infinite alternate;
         }
         @keyframes pulseGlow {
-            from { opacity: 0.85; }
+            from { opacity: 0.8; }
             to { opacity: 1; }
         }
 
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
-            100% { transform: translateY(0px); }
-        }
         .floating-icon {
             animation: float 4s ease-in-out infinite;
             display: inline-block;
             will-change: transform;
         }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
 
-        /* Nieve Cayendo (OPTIMIZADA) */
+        /* Nieve optimizada con Aceleración por Hardware */
         .snowflake {
             position: fixed;
             top: -10vh;
-            color: rgba(255,255,255,0.8);
+            color: rgba(255,255,255,0.7);
             user-select: none;
-            z-index: 40; 
+            z-index: 40;
             pointer-events: none;
             will-change: transform;
             animation: fall linear infinite;
         }
         @keyframes fall {
-            0% { transform: translate3d(0, -10vh, 0) rotate(0deg); opacity: 1; }
-            100% { transform: translate3d(20px, 110vh, 0) rotate(360deg); opacity: 0; }
+            0% { transform: translate3d(0, -10vh, 0) rotate(0deg); }
+            100% { transform: translate3d(20px, 110vh, 0) rotate(360deg); }
         }
 
-        /* Botones elegantes congelados */
         .btn-elegant {
             display: inline-block;
             padding: 12px 30px;
@@ -134,8 +132,6 @@
             cursor: pointer;
             background: rgba(14, 165, 233, 0.1);
             border-radius: 4px;
-            position: relative;
-            overflow: hidden;
         }
         
         .btn-elegant:hover {
@@ -144,11 +140,8 @@
             border-color: #7dd3fc;
         }
 
-        body.no-scroll {
-            overflow: hidden;
-        }
+        body.no-scroll { overflow: hidden; }
 
-        /* Video Splash Screen */
         #splash-screen {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -157,75 +150,72 @@
             display: flex; justify-content: center; align-items: center;
             transition: opacity 0.8s ease-out;
         }
+
         #splash-screen.fade-out {
             opacity: 0;
             pointer-events: none;
         }
+
         #splash-video {
             width: 100%; height: 100%;
             object-fit: cover;
             position: absolute; top: 0; left: 0;
         }
 
-        /* Botón de Música Flotante (OPTIMIZADO) */
         #music-btn {
             position: fixed; bottom: 20px; left: 20px;
             width: 45px; height: 45px;
-            background: rgba(3, 7, 18, 0.85);
+            background: rgba(3, 7, 18, 0.8);
             border: 1px solid rgba(125, 211, 252, 0.5);
             border-radius: 50%; color: #7dd3fc;
             display: none; justify-content: center; align-items: center;
             z-index: 100; cursor: pointer;
-            transition: all 0.3s ease;
         }
 
-        /* Estilos del contador (OPTIMIZADO: SIN BLUR) */
+        /* Estilos del contador SÚPER LIGERO */
         .countdown-box {
-            background: rgba(3, 7, 18, 0.75);
-            border: 1px solid rgba(125, 211, 252, 0.3);
+            background: rgba(3, 7, 18, 0.8);
+            border: 1px solid rgba(125, 211, 252, 0.2);
             border-radius: 8px;
             padding: 10px;
             width: 70px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
     </style>
 </head>
 <body class="no-scroll">
 
-    <!-- Audio de Fondo -->
-    <audio id="bg-music" loop>
+    <!-- Audio de Fondo: Ahora intenta arrancar de inmediato (autoplay) -->
+    <audio id="bg-music" autoplay loop>
         <source src="musica.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Botón flotante música -->
     <button id="music-btn" onclick="toggleMusic()">
         <i class="fa-solid fa-music-slash"></i>
     </button>
 
-    <!-- Pantalla de Bienvenida con Video -->
     <div id="splash-screen">
         <video id="splash-video" autoplay muted playsinline webkit-playsinline src="intro.mp4"></video>
     </div>
 
-    <!-- Contenedor móvil -->
     <div class="app-container" id="main-container">
 
-        <!-- 1. INICIO (Hero Section) -->
+        <!-- 1. INICIO -->
         <section class="h-screen w-full bg-frozen flex flex-col justify-center items-center text-center p-6 relative">
             <div class="fade-in z-10">
                 <p class="font-sans font-light tracking-[0.3em] text-sm mb-2 text-ice-300">MIS DULCES XVI</p>
                 <h1 class="font-serif text-6xl md:text-7xl text-white tracking-widest glow-text">ANGELICA<br>MARIANA</h1>
                 <p class="font-sans font-light text-xs mt-4 text-gray-300 italic">"Una noche mágica, congelada y llena de emociones"</p>
             </div>
-            
             <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce opacity-70 text-ice-300">
                 <i class="fa-solid fa-chevron-down text-xl"></i>
             </div>
         </section>
 
-        <!-- 2. CONTADOR (NUEVA SECCIÓN) -->
+        <!-- 2. CONTADOR DE TIEMPO -->
         <section class="bg-ice-gradient py-16 px-6 text-center border-b border-ice-300/10 relative overflow-hidden">
             <div class="fade-in z-10 relative">
                 <h2 class="font-serif text-2xl tracking-widest mb-6 uppercase text-white">Falta muy poco</h2>
@@ -266,7 +256,7 @@
 
         <!-- 4. ¿DÓNDE? -->
         <section class="bg-frozen py-24 px-8 text-center flex flex-col items-center justify-center border-y border-ice-300/20">
-            <div class="fade-in w-full max-w-sm mx-auto p-8 border border-ice-300/30 bg-[#060b14] rounded-lg">
+            <div class="fade-in w-full max-w-sm mx-auto p-8 border border-ice-300/20 bg-[#060b14] rounded-lg shadow-xl">
                 <i class="fa-solid fa-location-dot text-4xl mb-6 text-ice-300 floating-icon"></i>
                 <h2 class="font-serif text-3xl tracking-widest mb-4 uppercase text-white">¿Dónde?</h2>
                 <p class="font-sans font-light tracking-wider text-sm mb-4 uppercase text-gray-300">Casa de habitación <br><span class="text-ice-100 font-medium">4:00 p.m.</span></p>
@@ -280,21 +270,21 @@
             <div class="fade-in max-w-sm">
                 <i class="fa-solid fa-gift text-4xl mb-6 text-ice-300 floating-icon"></i>
                 <h2 class="font-serif text-3xl tracking-widest mb-6 uppercase text-white">Regalos</h2>
-                <p class="font-sans font-light text-sm leading-relaxed mb-8 text-gray-300">
-                    Nada es más importante que tu presencia, pero si deseas hacerme un presente, puedes depositarlo en el sobre que te haré llegar.
+                <p class="font-sans font-light text-sm leading-relaxed mb-8 text-gray-400">
+                    Nada es más importante que tu presencia, pero si deseas hacerme un presente, puedes depositarlo en el sobre que te haré llegar o mediante transferencia.
                 </p>
-                
+                <button onclick="openModal()" class="btn-elegant w-full">Ver Cuenta</button>
             </div>
         </section>
 
         <!-- 6. DRESS CODE -->
         <section class="bg-frozen py-24 px-8 text-center flex flex-col items-center justify-center border-y border-ice-300/20">
-            <div class="fade-in p-6 bg-[#060b14] rounded-lg border border-ice-300/30">
+            <div class="fade-in p-6 bg-[#060b14] rounded-lg border border-ice-300/20 shadow-xl">
                 <i class="fa-regular fa-gem text-4xl mb-6 text-ice-300 floating-icon"></i>
                 <h2 class="font-serif text-3xl tracking-widest mb-4 uppercase text-white">Dress Code</h2>
                 <p class="font-sans font-light tracking-widest text-lg uppercase text-ice-100 mb-4">Elegante / Etiqueta</p>
-                <p class="font-sans text-xs text-gray-300 uppercase tracking-wider border-t border-ice-300/30 pt-4">
-                    ❄️ (Mujeres no azul, será reservado para la festejada) ❄️
+                <p class="font-sans text-xs text-gray-400 uppercase tracking-wider border-t border-ice-300/20 pt-4">
+                    ❄️ (Mujeres no azul, reservado para la festejada) ❄️
                 </p>
             </div>
         </section>
@@ -306,9 +296,8 @@
                 <p class="font-sans font-light text-sm text-ice-300 mb-8">ANTES DEL 31 DE OCTUBRE</p>
 
                 <div class="max-w-sm mx-auto flex flex-col gap-4">
-                    <input type="text" id="nombre-invitado" placeholder="Nombre y Apellido" required style="width: 100%; padding: 15px; background: rgba(3,7,18,0.5); border: 1px solid rgba(125,211,252,0.3); color: #fff; border-radius: 8px; font-size: 0.95rem; outline: none; text-align: center; font-family: 'Montserrat', sans-serif;">
-                    
-                    <button onclick="enviarWhatsApp()" style="width: 100%; padding: 15px; background: #e0f2fe; color: #030712; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: bold; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;">
+                    <input type="text" id="nombre-invitado" placeholder="Nombre y Apellido" required style="width: 100%; padding: 15px; background: rgba(3,7,18,0.5); border: 1px solid rgba(125,211,252,0.3); color: #fff; border-radius: 8px; outline: none; text-align: center;">
+                    <button onclick="enviarWhatsApp()" style="width: 100%; padding: 15px; background: #e0f2fe; color: #030712; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase;">
                         Confirmar por WhatsApp
                     </button>
                 </div>
@@ -331,29 +320,26 @@
                 </button>
                 <i class="fa-solid fa-building-columns text-3xl mb-4 text-ice-300"></i>
                 <h3 class="font-serif text-2xl mb-6 uppercase tracking-widest text-white">Datos Bancarios</h3>
-                
                 <div class="font-sans font-light text-sm space-y-4 text-left bg-[#030712] p-5 rounded-md border border-ice-300/20 text-gray-200">
-                    <p><strong class="text-ice-300 font-medium">Banco:</strong> Banco Nación</p>
-                    <p><strong class="text-ice-300 font-medium">Titular:</strong> Familia Mili</p>
-                    <p><strong class="text-ice-300 font-medium">CBU:</strong> 00000031234567890123</p>
-                    <p><strong class="text-ice-300 font-medium">Alias:</strong> MILI.XV.2026</p>
+                    <p><strong class="text-ice-300">Banco:</strong> Banco Nación</p>
+                    <p><strong class="text-ice-300">Titular:</strong> Familia Mili</p>
+                    <p><strong class="text-ice-300">CBU:</strong> 00000031234567890123</p>
+                    <p><strong class="text-ice-300">Alias:</strong> MILI.XV.2026</p>
                 </div>
-                
                 <button onclick="copyAlias()" class="btn-elegant w-full mt-6">
                     <i class="fa-regular fa-copy mr-2"></i> Copiar Alias
                 </button>
-                
-                <p id="copy-msg" class="text-xs text-ice-300 mt-3 hidden font-medium">¡Alias copiado al portapapeles!</p>
+                <p id="copy-msg" class="text-xs text-ice-300 mt-3 hidden">¡Alias copiado!</p>
             </div>
         </div>
 
     </div>
 
     <script>
-        // --- 1. Generador de Nieve OPTIMIZADO ---
+        // --- 1. Generador de Nieve ---
         function createSnowflakes() {
             const container = document.getElementById('main-container');
-            const snowflakesCount = 20; // Reducido para evitar lag
+            const snowflakesCount = 20; 
             for (let i = 0; i < snowflakesCount; i++) {
                 let snowflake = document.createElement('div');
                 snowflake.className = 'snowflake';
@@ -362,12 +348,12 @@
                 snowflake.style.fontSize = (Math.random() * 12 + 10) + 'px'; 
                 snowflake.style.animationDuration = (Math.random() * 5 + 7) + 's'; 
                 snowflake.style.animationDelay = (Math.random() * 5) + 's';
-                snowflake.style.opacity = Math.random() * 0.5 + 0.3;
+                snowflake.style.opacity = Math.random() * 0.6 + 0.2;
                 container.appendChild(snowflake);
             }
         }
 
-        // --- 2. Contador (Countdown) ---
+        // --- 2. Contador de Tiempo (Countdown) ---
         function initCountdown() {
             const targetDate = new Date("November 21, 2026 16:00:00").getTime();
             
@@ -394,26 +380,44 @@
             }, 1000);
         }
 
-        // --- 3. Animaciones Smooth Scroll ---
+        // --- 3. Forzar Música desde el inicio ---
+        function startMusicOnLoad() {
+            const bgMusic = document.getElementById('bg-music');
+            const musicIcon = document.querySelector('#music-btn i');
+            
+            if (bgMusic && bgMusic.paused) {
+                bgMusic.play().then(() => {
+                    if (musicIcon) {
+                        musicIcon.classList.remove('fa-music-slash');
+                        musicIcon.classList.add('fa-music');
+                    }
+                }).catch(error => {
+                    console.log("El navegador bloqueó la música hasta que el usuario toque la pantalla.");
+                });
+            }
+        }
+
+        // --- 4. Eventos Principales ---
         document.addEventListener("DOMContentLoaded", function() {
             initCountdown();
 
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.1
-            };
+            // Intentar arrancar música de inmediato (Funcionará en PC)
+            startMusicOnLoad();
 
+            // TRUCO ANTI-BLOQUEO: Si el celular bloqueó la música, al PRIMER roce de pantalla se activa
+            document.body.addEventListener('click', startMusicOnLoad, { once: true });
+            document.body.addEventListener('touchstart', startMusicOnLoad, { once: true });
+
+            // Animación Smooth Observer
             const observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
                     }
                 });
-            }, observerOptions);
+            }, { rootMargin: '0px', threshold: 0.1 });
 
-            const fadeElements = document.querySelectorAll('.fade-in');
-            fadeElements.forEach(el => observer.observe(el));
+            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
             const splashVideo = document.getElementById('splash-video');
             if (splashVideo) {
@@ -421,35 +425,22 @@
             }
         });
 
-        // --- 4. Pantalla de carga, video y música ---
         function hideSplashScreen() {
             const splashScreen = document.getElementById('splash-screen');
+            const splashVideo = document.getElementById('splash-video');
             const body = document.body;
-            const bgMusic = document.getElementById('bg-music');
-            const musicBtn = document.getElementById('music-btn');
             
-            if (splashScreen && !splashScreen.classList.contains('fade-out')) {
-                splashScreen.classList.add('fade-out');
+            if (splashScreen) {
+                splashScreen.style.opacity = '0';
                 body.classList.remove('no-scroll');
                 
-                musicBtn.style.display = 'flex';
+                document.getElementById('music-btn').style.display = 'flex';
                 createSnowflakes();
                 
-                if (bgMusic) {
-                    bgMusic.play().then(() => {
-                        const musicIcon = document.querySelector('#music-btn i');
-                        musicIcon.classList.remove('fa-music-slash');
-                        musicIcon.classList.add('fa-music');
-                    }).catch(error => {
-                        console.log("Música pausada esperando interacción del usuario.");
-                    });
-                }
-                
-                setTimeout(() => {
-                    splashScreen.style.display = 'none';
-                    // Eliminar el video del DOM por completo libera RAM al instante
-                    const video = document.getElementById('splash-video');
-                    if(video) video.remove(); 
+                // DESTRUCCIÓN TOTAL DEL VIDEO PARA ELIMINAR LAG
+                setTimeout(() => { 
+                    if(splashVideo) splashVideo.remove();
+                    splashScreen.remove();
                 }, 800); 
             }
         }
@@ -457,7 +448,6 @@
         function toggleMusic() {
             const bgMusic = document.getElementById('bg-music');
             const musicIcon = document.querySelector('#music-btn i');
-
             if (bgMusic.paused) {
                 bgMusic.play();
                 musicIcon.classList.remove('fa-music-slash');
@@ -469,10 +459,10 @@
             }
         }
 
-        // --- 5. Modal y WhatsApp ---
+        // --- 5. Modal y Botones ---
         const modal = document.getElementById('gift-modal');
         const modalContent = document.getElementById('gift-modal-content');
-
+        
         function openModal() {
             modal.classList.remove('hidden');
             setTimeout(() => {
@@ -481,20 +471,15 @@
                 modalContent.classList.add('scale-100');
             }, 10);
         }
-
+        
         function closeModal() {
             modal.classList.add('opacity-0');
             modalContent.classList.remove('scale-100');
             modalContent.classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                document.getElementById('copy-msg').classList.add('hidden');
-            }, 300);
+            setTimeout(() => { modal.classList.add('hidden'); document.getElementById('copy-msg').classList.add('hidden'); }, 300);
         }
-
-        modal.addEventListener('click', function(e) {
-            if (e.target === modal) closeModal();
-        });
+        
+        modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
 
         function copyAlias() {
             const tempInput = document.createElement("input");
@@ -503,21 +488,14 @@
             tempInput.select();
             document.execCommand("copy");
             document.body.removeChild(tempInput);
-            
-            const copyMsg = document.getElementById('copy-msg');
-            copyMsg.classList.remove('hidden');
-            setTimeout(() => copyMsg.classList.add('hidden'), 3000);
+            document.getElementById('copy-msg').classList.remove('hidden');
+            setTimeout(() => document.getElementById('copy-msg').classList.add('hidden'), 3000);
         }
 
         function enviarWhatsApp() {
-            const nombreInput = document.getElementById('nombre-invitado').value.trim();
-            if (nombreInput === "") {
-                alert("Por favor, ingresa tu nombre y apellido para confirmar.");
-                return;
-            }
-            const numeroWhatsApp = "50242897415"; 
-            const mensaje = `¡Hola! Confirmo mi asistencia a los XVI de Marianita. Soy: *${nombreInput}*. ¡Allá nos vemos! ❄️`;
-            window.open(`https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`, '_blank');
+            const nombre = document.getElementById('nombre-invitado').value.trim();
+            if (!nombre) { alert("Ingresa tu nombre por favor."); return; }
+            window.open(`https://wa.me/50242897415?text=${encodeURIComponent(`¡Hola! Confirmo mi asistencia a los XV de Angélica Mariana. Soy: *${nombre}*. ¡Allá nos vemos! ❄️`)}`, '_blank');
         }
     </script>
 </body>
