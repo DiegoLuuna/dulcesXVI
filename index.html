@@ -51,7 +51,7 @@
             overflow-x: hidden; position: relative;
         }
 
-        /* Texturas y Fondos (OPTIMIZADO) */
+        /* Texturas y Fondos */
         .bg-frozen {
             background-image: linear-gradient(rgba(3, 7, 18, 0.7), rgba(3, 7, 18, 0.85)), url('fondo.png');
             background-size: cover; background-position: center;
@@ -123,6 +123,7 @@
             display: flex; justify-content: center; align-items: center;
             cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;
             box-shadow: 0 0 20px rgba(125, 211, 252, 0.3);
+            margin: 0 auto; /* Refuerzo de centrado */
         }
         .crystal-button:hover {
             transform: scale(1.05); box-shadow: 0 0 30px rgba(125, 211, 252, 0.6);
@@ -133,7 +134,7 @@
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background-color: #000; z-index: 9999;
             display: flex; justify-content: center; align-items: center;
-            transition: opacity 0.8s ease-out; opacity: 0; pointer-events: none; /* Inicia oculto hasta que tocan abrir */
+            transition: opacity 0.8s ease-out; opacity: 0; pointer-events: none;
         }
         #splash-video {
             width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;
@@ -157,7 +158,7 @@
 </head>
 <body class="no-scroll">
 
-    <!-- Audio de Fondo (Sin autoplay, lo controlará el botón de cristal) -->
+    <!-- Audio de Fondo -->
     <audio id="bg-music" loop>
         <source src="musica.mp3" type="audio/mpeg">
     </audio>
@@ -171,21 +172,23 @@
         <!-- Overlay oscuro sobre tu fondo -->
         <div style="position: absolute; inset: 0; background: rgba(3, 7, 18, 0.75);"></div>
         
-        <div style="position: relative; z-index: 10; text-align: center; animation: pulseGlow 3s infinite alternate;">
-            <p class="font-sans font-light tracking-[0.2em] text-xs mb-6 text-ice-300">MIS DULCES XVI</p>
+        <!-- Contenedor flex forzado al centro absoluto -->
+        <div style="position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; animation: pulseGlow 3s infinite alternate;">
+            
+            <p class="font-sans font-light tracking-[0.2em] text-xs mb-6 text-ice-300 text-center w-full">Tenemos una invitación invernal para ti...</p>
             
             <!-- Botón de Cristal -->
             <button class="crystal-button" onclick="startInvitation()">
                 <i class="fa-regular fa-snowflake text-6xl text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.9)]"></i>
             </button>
             
-            <p style="margin-top: 25px; font-family: 'Montserrat', sans-serif; font-size: 0.8rem; color: #e0f2fe; letter-spacing: 4px; text-transform: uppercase;">Tocar para abrir</p>
+            <p style="margin-top: 25px; font-family: 'Montserrat', sans-serif; font-size: 0.8rem; color: #e0f2fe; letter-spacing: 4px; text-transform: uppercase; text-align: center; w-full">Tocar para abrir</p>
+        
         </div>
     </div>
 
     <!-- 2. PANTALLA DEL VIDEO (Aparece al tocar el copo) -->
     <div id="splash-screen">
-        <!-- Quitamos el "autoplay" porque se activará al hacer clic -->
         <video id="splash-video" muted playsinline webkit-playsinline src="intro.mp4"></video>
     </div>
 
@@ -260,7 +263,6 @@
                 <p class="font-sans font-light text-sm leading-relaxed mb-8 text-gray-400">
                     Nada es más importante que tu presencia, pero si deseas hacerme un presente, puedes depositarlo en el sobre que te haré llegar.
                 </p>
-               
             </div>
         </section>
 
@@ -359,7 +361,7 @@
             }, 1000);
         }
 
-        // --- 3. NUEVO SISTEMA DE INICIO (El botón de Cristal) ---
+        // --- 3. NUEVO SISTEMA DE INICIO ---
         function startInvitation() {
             const preIntro = document.getElementById('pre-intro');
             const splashScreen = document.getElementById('splash-screen');
@@ -367,7 +369,7 @@
             const bgMusic = document.getElementById('bg-music');
             const musicIcon = document.querySelector('#music-btn i');
 
-            // 1. Iniciar la música (Como el usuario acaba de tocar el botón, el celular lo permite al 100%)
+            // 1. Iniciar la música al tocar
             if (bgMusic) {
                 bgMusic.play();
                 if (musicIcon) {
@@ -477,7 +479,7 @@
         function enviarWhatsApp() {
             const nombre = document.getElementById('nombre-invitado').value.trim();
             if (!nombre) { alert("Ingresa tu nombre por favor."); return; }
-            window.open(`https://wa.me/50242897415?text=${encodeURIComponent(`¡Hola! Confirmo mi asistencia a los XV de Angélica Mariana. Soy: *${nombre}*. ¡Allá nos vemos! ❄️`)}`, '_blank');
+            window.open(`https://wa.me/50242897415?text=${encodeURIComponent(`¡Hola! Confirmo mi asistencia a los XV de Marianita. Soy: *${nombre}*. ¡Allá nos vemos! ❄️`)}`, '_blank');
         }
     </script>
 </body>
