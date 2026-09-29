@@ -244,30 +244,34 @@
             </div>
         </section>
 
-        <!-- 4. ¿DÓNDE? -->
-        <section class="bg-frozen py-24 px-8 text-center flex flex-col items-center justify-center border-y border-ice-300/20">
-            <div class="fade-in w-full max-w-sm mx-auto p-8 border border-ice-300/20 bg-[#060b14] rounded-lg shadow-xl">
+       <!-- 4. ¿DÓNDE? (CON MAPAS INTEGRADOS) -->
+        <section class="bg-frozen py-24 px-6 text-center flex flex-col items-center justify-center border-y border-ice-300/20">
+            <div class="fade-in w-full max-w-sm mx-auto p-6 border border-ice-300/20 bg-[#060b14] rounded-lg shadow-xl">
                 <i class="fa-solid fa-location-dot text-4xl mb-6 text-ice-300 floating-icon"></i>
                 <h2 class="font-serif text-3xl tracking-widest mb-6 uppercase text-white">¿Dónde?</h2>
                 
                 <!-- Destino 1: Casa de habitación -->
-                <div class="mb-6 pb-6 border-b border-ice-300/10">
+                <div class="mb-8 pb-8 border-b border-ice-300/10">
                     <p class="font-sans font-light tracking-wider text-sm uppercase text-gray-300">Casa de habitación</p>
-                    <p class="text-ice-100 font-medium text-sm mb-3">4:00 p.m.</p>
-                    <!-- PEGA AQUÍ EL LINK DE GOOGLE MAPS DE LA CASA -->
-                    <a href="https://maps.app.goo.gl/zheNGHG5DphGoTMKA" target="_blank" class="btn-elegant w-full text-xs">
-                        <i class="fa-solid fa-diamond-turn-right mr-2 text-ice-300"></i> Ubicación Casa
-                    </a>
+                    <p class="text-ice-100 font-medium text-sm mb-4">4:00 p.m.</p>
+                    
+                    <!-- Mapa Integrado 1 -->
+                    <div class="w-full h-48 rounded-md overflow-hidden border border-ice-300/30 shadow-[0_0_15px_rgba(125,211,252,0.1)]">
+                        <!-- REEMPLAZA EL SRC DE ABAJO CON EL ENLACE DE TU MAPA 1 -->
+                        <iframe src="https://maps.app.goo.gl/zheNGHG5DphGoTMKA" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
                 </div>
 
                 <!-- Destino 2: Casa de la Cultura -->
                 <div>
                     <p class="font-sans font-light tracking-wider text-sm uppercase text-gray-300">Casa de la Cultura</p>
-                    <p class="text-ice-100 font-medium text-sm mb-3">6:00 p.m.</p>
-                    <!-- PEGA AQUÍ EL LINK DE GOOGLE MAPS DE LA CASA DE LA CULTURA -->
-                    <a href="https://maps.app.goo.gl/aDA4GuSFn4djpG4u6" target="_blank" class="btn-elegant w-full text-xs">
-                        <i class="fa-solid fa-diamond-turn-right mr-2 text-ice-300"></i> Ubicación Recepción
-                    </a>
+                    <p class="text-ice-100 font-medium text-sm mb-4">6:00 p.m.</p>
+                    
+                    <!-- Mapa Integrado 2 -->
+                    <div class="w-full h-48 rounded-md overflow-hidden border border-ice-300/30 shadow-[0_0_15px_rgba(125,211,252,0.1)]">
+                        <!-- REEMPLAZA EL SRC DE ABAJO CON EL ENLACE DE TU MAPA 2 -->
+                        <iframe src="https://maps.app.goo.gl/aDA4GuSFn4djpG4u6" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
                 </div>
             </div>
         </section>
