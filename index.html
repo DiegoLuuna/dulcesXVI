@@ -175,7 +175,7 @@
         <!-- Contenedor flex forzado al centro absoluto -->
         <div style="position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; animation: pulseGlow 3s infinite alternate;">
             
-            <p class="font-sans font-light tracking-[0.2em] text-xs mb-6 text-ice-300 text-center w-full">Tenemos una invitación invernal para ti...</p>
+            <p class="font-sans font-light tracking-[0.2em] text-xs mb-6 text-ice-300 text-center w-full">Celebremos juntos una noche de invierno...</p>
             
             <!-- Botón de Cristal -->
             <button class="crystal-button" onclick="startInvitation()">
@@ -196,10 +196,11 @@
     <div class="app-container" id="main-container">
         <!-- 1. INICIO -->
         <section class="h-screen w-full bg-frozen flex flex-col justify-center items-center text-center p-6 relative">
-            <div class="fade-in z-10">
+            <div class="fade-in z-10 w-full px-2">
                 <p class="font-sans font-light tracking-[0.3em] text-sm mb-2 text-ice-300">MIS DULCES XVI</p>
-                <h1 class="font-serif text-6xl md:text-7xl text-white tracking-widest glow-text">ANGELICA<br>MARIANA</h1>
-                <p class="font-sans font-light text-xs mt-4 text-gray-300 italic">"Una noche mágica, congelada y llena de emociones"</p>
+                <!-- Modificado: text-[11vw] y break-words para que sea fluido y no se corte -->
+                <h1 class="font-serif text-[11vw] sm:text-6xl text-white tracking-[0.1em] sm:tracking-widest glow-text leading-tight w-full break-words">ANGELICA<br>MARIANA</h1>
+                <p class="font-sans font-light text-xs mt-4 text-gray-300 italic">"Una noche mágica, congelada y llena de emocines... </p>
             </div>
             <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce opacity-70 text-ice-300">
                 <i class="fa-solid fa-chevron-down text-xl"></i>
@@ -291,8 +292,8 @@
         <section class="bg-frozen py-24 px-8 text-center flex flex-col items-center justify-center border-y border-ice-300/20">
             <div class="fade-in p-6 bg-[#060b14] rounded-lg border border-ice-300/20 shadow-xl">
                 <i class="fa-regular fa-gem text-4xl mb-6 text-ice-300 floating-icon"></i>
-                <h2 class="font-serif text-3xl tracking-widest mb-4 uppercase text-white">Dress Code</h2>
-                <p class="font-sans font-light tracking-widest text-lg uppercase text-ice-100 mb-4">Elegante / Etiqueta</p>
+                <h2 class="font-serif text-3xl tracking-widest mb-4 uppercase text-white">Codigo de Vestimenta</h2>
+                <p class="font-sans font-light tracking-widest text-lg uppercase text-ice-100 mb-4">Viste Elegante</p>
                 <p class="font-sans text-xs text-gray-400 uppercase tracking-wider border-t border-ice-300/20 pt-4">
                     ❄️ (Mujeres no azul, reservado para la festejada) ❄️
                 </p>
@@ -303,7 +304,7 @@
         <section id="asistencia" class="bg-ice-gradient py-20 px-6 text-center">
             <div class="fade-in">
                 <h2 class="font-serif text-2xl mb-2 tracking-widest uppercase text-white">Confirma tu asistencia</h2>
-                <p class="font-sans font-light text-sm text-ice-300 mb-8">ANTES DEL 31 DE OCTUBRE</p>
+                <p class="font-sans font-light text-sm text-ice-300 mb-8">ANTES DEL 7 DE NOVIEMBRE</p>
 
                 <div class="max-w-sm mx-auto flex flex-col gap-4">
                     <input type="text" id="nombre-invitado" placeholder="Nombre y Apellido" required style="width: 100%; padding: 15px; background: rgba(3,7,18,0.5); border: 1px solid rgba(125,211,252,0.3); color: #fff; border-radius: 8px; outline: none; text-align: center;">
@@ -413,7 +414,7 @@
             setTimeout(() => { preIntro.remove(); }, 800);
         }
 
-        // --- 4. Cierre del video e inicio de la página ---
+       // --- 4. Cierre del video e inicio de la página ---
         document.addEventListener("DOMContentLoaded", function() {
             initCountdown();
 
@@ -429,7 +430,10 @@
 
             const splashVideo = document.getElementById('splash-video');
             if (splashVideo) {
-                splashVideo.addEventListener('ended', hideSplashScreen);
+                // MODIFICACIÓN: Retraso de 1.5 segundos (1500ms) antes de llamar a hideSplashScreen
+                splashVideo.addEventListener('ended', function() {
+                    setTimeout(hideSplashScreen, 1500);
+                });
             }
         });
 
@@ -500,7 +504,7 @@
         function enviarWhatsApp() {
             const nombre = document.getElementById('nombre-invitado').value.trim();
             if (!nombre) { alert("Ingresa tu nombre por favor."); return; }
-            window.open(`https://wa.me/50242897415?text=${encodeURIComponent(`¡Hola! Confirmo mi asistencia a los XV de Marianita. Soy: *${nombre}*. ¡Allá nos vemos! ❄️`)}`, '_blank');
+            window.open(`https://wa.me/50242897415?text=${encodeURIComponent(`¡Hola! Confirmo mi asistencia a los XVI de Marianita. Soy: *${nombre}*. ¡Allá nos vemos! ❄️`)}`, '_blank');
         }
     </script>
 </body>
